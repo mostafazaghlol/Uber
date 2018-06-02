@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Uber</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
