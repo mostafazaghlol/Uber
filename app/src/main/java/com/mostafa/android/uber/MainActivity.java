@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
         buttonDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Login.class));
+                Intent intent = new Intent(MainActivity.this,Login.class);
+                intent.putExtra("cat","Driver");
+                startActivity(intent);
                 finish();
                 return;
             }
@@ -30,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
         buttonCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Login.class));
+                Intent intent = new Intent(MainActivity.this,Login.class);
+                intent.putExtra("cat","customer");
+                startActivity(intent);
                 finish();
                 return;
             }
