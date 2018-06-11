@@ -190,7 +190,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
         // You can now create a LatLng Object for use with maps
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(8));
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null) {
             DatabaseReference AvaliableDriver = FirebaseDatabase.getInstance().getReference("DriversAvailable");
