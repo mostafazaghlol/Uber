@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,8 @@ public class Login extends AppCompatActivity {
     @BindView(R.id.register)
     Button buttonRegister;
 
+    boolean isIN = false;
+
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
     @Override
@@ -47,13 +51,20 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user != null){
-                    if(intent.getStringExtra("cat").equals("customer")){
+                if(user != null && !isIN){
+                    if(intent.getStringExtra("cat").equals("customer") ){
                         startActivity(new Intent(Login.this,CustomerMapActivity.class));
+                        isIN = true;
+                        finish();
+                        return;
                     }else{
-                        startActivity(new Intent(Login.this,DriverMapsActivity.class));                    }
-                    finish();
-                    return;
+                        startActivity(new Intent(Login.this,DriverMapsActivity.class));
+                        isIN = true;
+                        finish();
+                        return;
+                    }
+                    //finish();
+                    //return;
                 }
             }
         };
@@ -62,47 +73,61 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 final String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(Login.this, "error with register" +task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
-                        }else{
-                            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            String cat;
-                            if(intent.getStringExtra("cat").equals("customer")){
-                                cat = "customer";
+                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+                    editTextEmail.setError("Enter the text here");
+                    editTextPassword.setError("Enter the text here");
+                }else{
+                    mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful()){
+                                Toast.makeText(Login.this, "error with register" +task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
                             }else{
-                                cat = "driver";
+                                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                String cat;
+                                if(intent.getStringExtra("cat").equals("customer")){
+                                    cat = "customer";
+                                }else{
+                                    cat = "driver";
+                                }
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(cat).child(userID);
+
+                                Map newPost = new HashMap();
+                                newPost.put("email",email);
+
+                                ref.setValue(newPost);
                             }
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(cat).child(userID);
-
-                            Map newPost = new HashMap();
-                            newPost.put("email",email);
-
-                            ref.setValue(newPost);
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = editTextEmail.getText().toString().trim();
+                final String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString();
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(Login.this, "Error with login "+task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+                    editTextEmail.setError("Enter the text here");
+                    editTextPassword.setError("Enter the text here");
+                }else {
+
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(Login.this, "Error with login " + task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
     }
+
+
 
     @Override
     protected void onStart() {
