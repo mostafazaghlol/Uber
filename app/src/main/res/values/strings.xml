@@ -21,4 +21,14 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="Distance">distance</string>
+    <string name="Settings">Settings</string>
+    <string name="name">name</string>
+    <string name="update">Update</string>
+    <string name="phone">Phone</string>
+    <string name="fackData">Mostafa Zaghloul</string>
+    <string name="callhim">Call The Customer</string>
+    <string name="Info">Info</string>
+    <string name="callhimDriver">Call Driver</string>
+    <string name="NoInfo">No Information for this user !</string>
 </resources>
