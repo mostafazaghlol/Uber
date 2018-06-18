@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -81,6 +82,7 @@ public class DriverMapsActivity extends FragmentActivity implements OnMapReadyCa
     Button phonecallImageView;
     @BindView(R.id.noInfoDriver)
     TextView noInfoDriver;
+
     String userid;
     String id;
     FusedLocationProviderClient mFusedLocationClient;

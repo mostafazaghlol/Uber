@@ -44,6 +44,8 @@ public class DriverMapSettings extends AppCompatActivity {
     EditText phoneEditText;
     @BindView(R.id.updateDriver)
     Button updateDriver;
+    @BindView(R.id.carTypeEditTextDriver)
+    EditText carTypeEditText;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     String id = firebaseAuth.getCurrentUser().getUid();
     private final DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference().child("Users").child("driver").child(id);
@@ -69,14 +71,17 @@ public class DriverMapSettings extends AppCompatActivity {
         updateDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nameEditText.getText().toString().isEmpty() && phoneEditText.getText().toString().isEmpty()){
+                if(nameEditText.getText().toString().isEmpty() || phoneEditText.getText().toString().isEmpty() || carTypeEditText.getText().toString().isEmpty()){
                     nameEditText.setError("Enter the missing data");
                     phoneEditText.setError("Enter the missing data");
+                    carTypeEditText.setError("Enter the missing data");
                 }else{
                     String name = nameEditText.getText().toString().trim();
                     String phone = phoneEditText.getText().toString().trim();
+                    String carType = carTypeEditText.getText().toString().trim();
                     updatepost.put("name",name);
                     updatepost.put("phone",phone);
+                    updatepost.put("car",phone);
                     databaseReference.updateChildren(updatepost);
                     if (imageuri != null) {
                         String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -133,6 +138,7 @@ public class DriverMapSettings extends AppCompatActivity {
                         onBackPressed();
                     }
                 }
+                onBackPressed();
             }
         });
     }
@@ -148,6 +154,9 @@ public class DriverMapSettings extends AppCompatActivity {
                     }
                     if(map.get("phone")!=null){
                         phoneEditText.setText(map.get("phone").toString());
+                    }
+                    if(map.get("car")!=null){
+                        carTypeEditText.setText(map.get("car").toString());
                     }
                     if(map.get("profileImageUrl")!=null){
                         String mProfileImageUrl = map.get("profileImageUrl").toString();

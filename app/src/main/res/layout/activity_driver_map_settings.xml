@@ -28,6 +28,13 @@
         android:id="@+id/phoneEditTextDriver"
         android:hint="@string/phone"
         android:inputType="number"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/colorPrimary"
+        android:id="@+id/carTypeEditTextDriver"
+        android:hint="@string/Car"
+        android:inputType="number"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

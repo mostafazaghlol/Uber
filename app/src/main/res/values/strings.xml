@@ -31,4 +31,5 @@
     <string name="Info">Info</string>
     <string name="callhimDriver">Call Driver</string>
     <string name="NoInfo">No Information for this user !</string>
+    <string name="Car">car</string>
 </resources>
