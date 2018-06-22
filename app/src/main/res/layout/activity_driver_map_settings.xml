@@ -33,8 +33,7 @@
         android:layout_height="wrap_content"
         android:textColorHint="@color/colorPrimary"
         android:id="@+id/carTypeEditTextDriver"
-        android:hint="@string/Car"
-        android:inputType="number"/>
+        android:hint="@string/Car" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

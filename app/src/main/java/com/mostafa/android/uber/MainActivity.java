@@ -8,9 +8,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonDriver;
     @BindView(R.id.customer)
     Button buttonCustomer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +31,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-            }
-            buttonDriver.setOnClickListener(new View.OnClickListener() {
+        }
+        FirebaseAuth.getInstance().signOut();
+        buttonDriver.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this,Login.class);
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             });
-            buttonCustomer.setOnClickListener(new View.OnClickListener() {
+        buttonCustomer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this,Login.class);
@@ -48,29 +51,11 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             });
-            return;
-        }else{
-            buttonDriver.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this,Login.class);
-                    intent.putExtra("cat","Driver");
-                    startActivity(intent);
-                    return;
-                }
-            });
-            buttonCustomer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this,Login.class);
-                    intent.putExtra("cat","customer");
-                    startActivity(intent);
-                    return;
-                }
-            });
+
+
         }
 
     }
 
 
-}
+

@@ -81,7 +81,7 @@ public class DriverMapSettings extends AppCompatActivity {
                     String carType = carTypeEditText.getText().toString().trim();
                     updatepost.put("name",name);
                     updatepost.put("phone",phone);
-                    updatepost.put("car",phone);
+                    updatepost.put("car",carType);
                     databaseReference.updateChildren(updatepost);
                     if (imageuri != null) {
                         String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();

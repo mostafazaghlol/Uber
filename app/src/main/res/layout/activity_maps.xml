@@ -33,6 +33,10 @@
         android:padding="10dp"
         android:visibility="gone"
         android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/re">
         <ImageView
             android:layout_width="100sp"
             android:layout_height="100sp"
@@ -80,6 +84,13 @@
                 android:text="@string/callhim"
                 android:id="@+id/phoneCall"/>
         </LinearLayout>
+        </RelativeLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Pickup"
+            android:id="@+id/pickCustomer"
+            android:layout_below="@id/re"/>
     </RelativeLayout>
 </FrameLayout>
 

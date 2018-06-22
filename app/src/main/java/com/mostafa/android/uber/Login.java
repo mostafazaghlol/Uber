@@ -34,9 +34,7 @@ public class Login extends AppCompatActivity {
     Button buttonLogin;
     @BindView(R.id.register)
     Button buttonRegister;
-
-    boolean isIN = false;
-
+    private boolean isIN = false;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
     @Override
@@ -51,13 +49,13 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user != null && !isIN){
-                    if(intent.getStringExtra("cat").equals("customer") ){
+                if(user != null && !isIN ){
+                    if(intent.getStringExtra("cat").equals("customer")){
                         startActivity(new Intent(Login.this,CustomerMapActivity.class));
                         isIN = true;
                         finish();
                         return;
-                    }else{
+                    }else if(intent.getStringExtra("cat").equals("Driver")){
                         startActivity(new Intent(Login.this,DriverMapsActivity.class));
                         isIN = true;
                         finish();
@@ -68,6 +66,7 @@ public class Login extends AppCompatActivity {
                 }
             }
         };
+        final String[] cat = new String[1];
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,13 +83,15 @@ public class Login extends AppCompatActivity {
                                 Toast.makeText(Login.this, "error with register" +task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
                             }else{
                                 String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                String cat;
+
                                 if(intent.getStringExtra("cat").equals("customer")){
-                                    cat = "customer";
+                                    cat[0] = "customer";
+
                                 }else{
-                                    cat = "driver";
+                                    cat[0] = "driver";
+
                                 }
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(cat).child(userID);
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(cat[0]).child(userID);
 
                                 Map newPost = new HashMap();
                                 newPost.put("email",email);
@@ -112,12 +113,18 @@ public class Login extends AppCompatActivity {
                     editTextEmail.setError("Enter the text here");
                     editTextPassword.setError("Enter the text here");
                 }else {
-
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(Login.this, "Error with login " + task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                if(intent.getStringExtra("cat").equals("customer")){
+                                    cat[0] = "customer";
+
+                                }else{
+                                    cat[0] = "Driver";
+
+                                }
                             }
                         }
                     });

@@ -55,10 +55,15 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CustomerSettingsActivity"
-            android:parentActivityName=".CustomerMapActivity">
-        </activity>
-        <activity android:name=".DriverMapSettings"
-            android:parentActivityName=".DriverMapsActivity"></activity>
+            android:parentActivityName=".CustomerMapActivity" />
+        <activity
+            android:name=".DriverMapSettings"
+            android:parentActivityName=".DriverMapsActivity" />
+        <activity
+            android:name=".HistoryActivity"
+            android:parentActivityName=".CustomerMapActivity" />
+        <activity android:name=".HistorySingleActivity"
+            android:parentActivityName=".HistoryActivity"></activity>
     </application>
 
 </manifest>

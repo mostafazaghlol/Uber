@@ -32,4 +32,7 @@
     <string name="callhimDriver">Call Driver</string>
     <string name="NoInfo">No Information for this user !</string>
     <string name="Car">car</string>
+    <string name="History">History</string>
+    <string name="from">From</string>
+    <string name="To">To</string>
 </resources>
