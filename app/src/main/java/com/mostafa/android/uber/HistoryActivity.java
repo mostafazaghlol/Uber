@@ -42,9 +42,6 @@ public class HistoryActivity extends AppCompatActivity {
           mHistoryRecyclerView.setLayoutManager(mHistoryLayoutManager);
           mHistoryAdapter = new HistoryAdapter(getDataSetHistory(), HistoryActivity.this);
           mHistoryRecyclerView.setAdapter(mHistoryAdapter);
-
-
-
           mHistoryAdapter.notifyDataSetChanged();
           customerOrDriver = "customer";
           userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

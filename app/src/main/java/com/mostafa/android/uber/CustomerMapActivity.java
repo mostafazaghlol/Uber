@@ -103,8 +103,6 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     @BindView(R.id.Histroy)
     TextView HistoryButton;
     private LatLng destinationLatLng;
-    //To stop search about Driver Avaialbe.
-    private boolean stopSearch = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,9 +149,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                     DriverlinearLayout.setVisibility(View.GONE);
                     noInfo.setVisibility(View.GONE);
                     CancelRequest();
-                    stopSearch = false;
                 }else {
-                    stopSearch =true;
                     isRequsted = true;
                     String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer Requests");
@@ -212,8 +208,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         GeoFire geoFire = new GeoFire(ref);
         geoQuery = geoFire.queryAtLocation(new GeoLocation(pickupmarkder.latitude,pickupmarkder.longitude),radius);
         geoQuery.removeAllListeners();
-        if(stopSearch){
-            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
                 @Override
                 public void onKeyEntered(String key, GeoLocation location) {
                     if(!driverFound && isRequsted) {
@@ -280,11 +275,11 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         }
 
 
-    }
+
     public DatabaseReference driveHasEndedRef;
     public ValueEventListener driveHasEndedRefListener;
     private void getHasRideEnded(){
-        driveHasEndedRef = FirebaseDatabase.getInstance().getReference().child("Users").child("drivers").child(driverkey).child("Customer Requests").child("CustomerId");
+        driveHasEndedRef = FirebaseDatabase.getInstance().getReference().child("Customer Requests");
         driveHasEndedRefListener = driveHasEndedRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -292,7 +287,19 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                 if(dataSnapshot.exists()){
 
                 }else{
-                    CancelRequest();
+                    pickup.setText("call uber");
+                    distance.setText("Distance is ....");
+                    DriverlinearLayout.setVisibility(View.GONE);
+                    DriverNameTextView.setText("");
+                    DriverPhoneTextView.setText("");
+                    DriverCarTextView.setText("Destination: --");
+                    DriverImageView.setImageResource(R.mipmap.ic_proflie);
+                    if (Pickumarker != null) {
+                        Pickumarker.remove();
+                    }
+                    if (mDriverMarker != null) {
+                        mDriverMarker.remove();
+                    }
                 }
                 }catch (Exception e){
                     Log.e("getHasRideEnded",e.getMessage().toString());
@@ -359,9 +366,9 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                 }
                 driverFound = false;
                 radius = 1;
-//                DatabaseReference databaseReferenceCustomerRequest = FirebaseDatabase.getInstance().getReference("Customer Requests");
-//                GeoFire geoFire = new GeoFire(databaseReferenceCustomerRequest);
-//                geoFire.removeLocation(userId);
+                DatabaseReference databaseReferenceCustomerRequest = FirebaseDatabase.getInstance().getReference("Customer Requests");
+                GeoFire geoFire = new GeoFire(databaseReferenceCustomerRequest);
+                geoFire.removeLocation(userId);
                 if (Pickumarker != null) {
                     Pickumarker.remove();
                 }
@@ -382,9 +389,9 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                 geoQuery.removeAllListeners();
 
                 radius = 1;
-//                DatabaseReference databaseReferenceCustomerRequest = FirebaseDatabase.getInstance().getReference("Customer Requests");
-//                GeoFire geoFire = new GeoFire(databaseReferenceCustomerRequest);
-//                geoFire.removeLocation(userId);
+                DatabaseReference databaseReferenceCustomerRequest = FirebaseDatabase.getInstance().getReference("Customer Requests");
+                GeoFire geoFire = new GeoFire(databaseReferenceCustomerRequest);
+                geoFire.removeLocation(userId);
                 if (Pickumarker != null) {
                     Pickumarker.remove();
                 }
@@ -430,10 +437,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                     if(x <100){
                         distance.setText("The driver arrived");
                     }
-                }else{
-                    Toast.makeText(CustomerMapActivity.this, "The Driver is not found !", Toast.LENGTH_SHORT).show();
                 }
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

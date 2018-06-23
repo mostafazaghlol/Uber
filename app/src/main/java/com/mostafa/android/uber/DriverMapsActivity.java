@@ -183,7 +183,6 @@ public class DriverMapsActivity extends FragmentActivity implements RoutingListe
         String requestId = historyRef.push().getKey();
         driverRef.child(requestId).setValue(true);
         customerRef.child(requestId).setValue(true);
-
         HashMap map = new HashMap();
         map.put("driver", userId);
         map.put("customer", CustomerId);
@@ -214,8 +213,7 @@ public class DriverMapsActivity extends FragmentActivity implements RoutingListe
                       getAssignedCustomerDestination();
                       getCustomerInfo();
                   }else{
-//                      Toast.makeText(DriverMapsActivity.this, "HI", Toast.LENGTH_LONG).show();
-//                      endRide();
+
                   }
               }catch (Exception e){
                   Log.e("GetAssignedRequest",e.getMessage().toString());
@@ -433,7 +431,7 @@ public class DriverMapsActivity extends FragmentActivity implements RoutingListe
         latLng = new LatLng(location.getLatitude(), location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null && ForDestoryMap ==0) {
+        if(user != null) {
             DatabaseReference AvaliableDriver = FirebaseDatabase.getInstance().getReference("DriversAvailable");
             GeoFire geoFireAv = new GeoFire(AvaliableDriver);
             DatabaseReference WorkingDriver= FirebaseDatabase.getInstance().getReference("DriversWorking");
@@ -447,11 +445,6 @@ public class DriverMapsActivity extends FragmentActivity implements RoutingListe
                     geoFireWo.setLocation(id, new GeoLocation(location.getLatitude(), location.getLongitude()));
                     geoFireAv.removeLocation(id);
                     break;
-            }
-            if(ForDestoryMap == 1) {
-                geoFireAv.removeLocation(id);
-            }else{
-                Log.e("On Location Changed ", "I am updataing ");
             }
         }
 

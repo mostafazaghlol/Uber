@@ -62,8 +62,10 @@
         <activity
             android:name=".HistoryActivity"
             android:parentActivityName=".CustomerMapActivity" />
-        <activity android:name=".HistorySingleActivity"
-            android:parentActivityName=".HistoryActivity"></activity>
+        <activity
+            android:name=".HistorySingleActivity"
+            android:parentActivityName=".HistoryActivity" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

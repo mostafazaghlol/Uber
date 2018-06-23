@@ -37,6 +37,7 @@ public class Login extends AppCompatActivity {
     private boolean isIN = false;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthStateListener;
+    boolean isForRegister = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if(user != null && !isIN ){
+                if(user != null && !isIN && !isForRegister){
                     if(intent.getStringExtra("cat").equals("customer")){
                         startActivity(new Intent(Login.this,CustomerMapActivity.class));
                         isIN = true;
@@ -63,6 +64,14 @@ public class Login extends AppCompatActivity {
                     }
                     //finish();
                     //return;
+                }else if(user != null && !isIN && isForRegister)
+                {
+                    if(intent.getStringExtra("cat").equals("customer")) {
+                        startActivity(new Intent(Login.this, RegisterActivity.class));
+                    }else{
+                        startActivity(new Intent(Login.this, RegisterActivity.class));
+
+                    }
                 }
             }
         };
@@ -70,6 +79,7 @@ public class Login extends AppCompatActivity {
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isForRegister = true;
                 final String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString();
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
